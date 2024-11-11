@@ -45,7 +45,7 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v3
           with:
-            repository: gravitl/netclient
+            repository: lmnzx/netclient
             ref: release-${{ inputs.version }}
             fetch-depth: 0
         - name: Get Tags
