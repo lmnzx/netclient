@@ -26,6 +26,22 @@ builds:
 
 archives:
   - format: binary
-    name_template: '{{ .Binary }}-{{ .Os }}-{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ with .Mips }}-{{ . }}{{ end }}'
+    name_template: >-
+      {{ .Binary }}-
+      {{- .Os }}-
+      {{- if eq .Arch "amd64" }}amd64{{ else if eq .Arch "386" }}386{{ else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+      {{- with .Mips }}-{{ . }}{{ end }}
+      {{- if eq .Os "windows" }}.exe{{ end }}
+    replacements:
+      darwin: darwin
+      linux: linux
+      windows: windows
+      arm: arm
+      amd64: amd64
+      386: 386
+      arm64: arm64
+    allow_different_binary_count: true
+
 release:
   prerelease: false
