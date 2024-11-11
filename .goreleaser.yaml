@@ -10,16 +10,24 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -s -w
-    targets:
-      - linux_amd64
-      - linux_arm64
-      - linux_arm_5
-      - linux_arm_6
-      - linux_arm_7
-      - linux_mips_hardfloat
-      - linux_mips_softfloat
-      - linux_mipsle_softfloat
-      - linux_mipsle_hardfloat
+    gomips:
+      - hardfloat
+      - softfloat
+    goarm:
+      - 5
+      - 6
+      - 7
+
+    # targets:
+    #   - linux_amd64
+    #   - linux_arm64
+    #   - linux_arm_5
+    #   - linux_arm_6
+    #   - linux_arm_7
+    #   - linux_mips_hardfloat
+    #   - linux_mips_softfloat
+    #   - linux_mipsle_softfloat
+    #   - linux_mipsle_hardfloat
 
 archives:
   - format: binary
