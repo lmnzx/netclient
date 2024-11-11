@@ -58,6 +58,7 @@ jobs:
         - name: GoReleaser
           uses: goreleaser/goreleaser-action@v6
           with:
+            version: "~> v2"
             args: release --clean --release-notes release.md
           env:
             GITHUB_TOKEN: ${{ secrets.TOKEN }}
