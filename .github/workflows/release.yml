@@ -70,15 +70,19 @@ jobs:
               if [ -d "$dir" ]; then
                 IFS='_' read -r _ OS ARCH VERSION <<< "$dir"
                 
-                case $ARCH in
-                  arm_5) ARCH_SUFFIX="v5" ;;
-                  arm_6) ARCH_SUFFIX="v6" ;;
-                  arm_7) ARCH_SUFFIX="v7" ;;
-                  arm64*) ARCH_SUFFIX="" ;;
-                  mips*) ARCH_SUFFIX="-${ARCH#mips_}" ;;
-                  *) ARCH_SUFFIX="" ;;
-                esac
-                
+                       case $ARCH in
+                        arm_5) ARCH_PART="armv5" ;;
+                        arm_6) ARCH_PART="armv6" ;;
+                        arm_7) ARCH_PART="armv7" ;;
+                        arm64*) ARCH_PART="arm64" ;;
+                        amd64*) ARCH_PART="amd64" ;;
+                        mips_hardfloat) ARCH_PART="mips-hardfloat" ;;
+                        mips_softfloat) ARCH_PART="mips-softfloat" ;;
+                        mipsle_hardfloat) ARCH_PART="mipsle-hardfloat" ;;
+                        mipsle_softfloat) ARCH_PART="mipsle-softfloat" ;;
+                        *) ARCH_PART="$ARCH" ;;
+                      esac
+ 
                 EXT=""
                 if [ "$OS" = "windows" ]; then
                   EXT=".exe"
