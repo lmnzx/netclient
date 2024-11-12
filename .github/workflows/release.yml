@@ -114,6 +114,5 @@ jobs:
             UPLOAD_PATH_VERSION: /var/www/files/qa/netclient-test-${{ github.event.inputs.version }}
           run: |
             ssh root@fileserver.clustercat.com "mkdir -p $UPLOAD_PATH_VERSION"
-            cd dist
             ls -alh
             # find . -type f -name "netclient-*" -exec scp {} root@fileserver.clustercat.com:$UPLOAD_PATH_VERSION/ \;
