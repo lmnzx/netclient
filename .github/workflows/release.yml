@@ -62,6 +62,34 @@ jobs:
             args: release --clean --release-notes release.md
           env:
             GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+        - name: Rename binaries
+          run: |
+            cd dist
+            for dir in headless_*; do
+              if [ -d "$dir" ]; then
+                IFS='_' read -r _ OS ARCH VERSION <<< "$dir"
+                
+                case $ARCH in
+                  arm_5) ARCH_SUFFIX="v5" ;;
+                  arm_6) ARCH_SUFFIX="v6" ;;
+                  arm_7) ARCH_SUFFIX="v7" ;;
+                  arm64*) ARCH_SUFFIX="" ;;
+                  mips*) ARCH_SUFFIX="-${ARCH#mips_}" ;;
+                  *) ARCH_SUFFIX="" ;;
+                esac
+                
+                EXT=""
+                if [ "$OS" = "windows" ]; then
+                  EXT=".exe"
+                fi
+                
+                NEW_NAME="../netclient-${OS}-${ARCH%_*}${ARCH_SUFFIX}${EXT}"
+                
+                mv "$dir/netclient${EXT}" "$NEW_NAME"
+              fi
+            done
+            cd ..
     
         - name: Install SSH key
           env:
@@ -87,4 +115,5 @@ jobs:
           run: |
             ssh root@fileserver.clustercat.com "mkdir -p $UPLOAD_PATH_VERSION"
             cd dist
-            find . -type f -name "netclient-*" -exec scp {} root@fileserver.clustercat.com:$UPLOAD_PATH_VERSION/ \;
+            ls -alh
+            # find . -type f -name "netclient-*" -exec scp {} root@fileserver.clustercat.com:$UPLOAD_PATH_VERSION/ \;
